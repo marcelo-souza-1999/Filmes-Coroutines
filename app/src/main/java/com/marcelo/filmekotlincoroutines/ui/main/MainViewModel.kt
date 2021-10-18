@@ -1,7 +1,27 @@
 package com.marcelo.filmekotlincoroutines.ui.main
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.marcelo.filmekotlincoroutines.models.Movies
+import com.marcelo.filmekotlincoroutines.repository.MainRepository
 
-class MainViewModel : ViewModel() {
-    // TODO: Implement the ViewModel
+class MainViewModel(private val repository: MainRepository) : ViewModel() {
+
+    val moviesLiveData = MutableLiveData<List<Movies>>()
+
+    fun getMovies() {
+        repository.getMovies { movies ->
+            moviesLiveData.postValue(movies)
+        }
+    }
+
+    class ViewModelFactory(private val repository: MainRepository) : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(MainViewModel::class.java))
+                return  MainViewModel(repository) as T
+            throw IllegalArgumentException("Classe ViewModel desconhecida")
+        }
+
+    }
 }
