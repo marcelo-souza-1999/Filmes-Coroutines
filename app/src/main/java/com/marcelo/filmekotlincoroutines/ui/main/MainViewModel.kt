@@ -5,21 +5,36 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.marcelo.filmekotlincoroutines.models.Movies
 import com.marcelo.filmekotlincoroutines.repository.MainRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainViewModel(private val repository: MainRepository) : ViewModel() {
 
     val moviesLiveData = MutableLiveData<List<Movies>>()
 
-    fun getMovies() {
+    /*fun getMovies() {
         repository.getMovies { movies ->
             moviesLiveData.postValue(movies)
+        }
+    }*/
+
+    fun getMoviesCoroutines () {
+        CoroutineScope(Dispatchers.Main).launch {
+            val movies = withContext(Dispatchers.Default) {
+                repository.getMoviesCoroutines()
+            }
+
+            moviesLiveData.value = movies
         }
     }
 
     class ViewModelFactory(private val repository: MainRepository) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            if (modelClass.isAssignableFrom(MainViewModel::class.java))
+            if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
                 return  MainViewModel(repository) as T
+            }
             throw IllegalArgumentException("Classe ViewModel desconhecida")
         }
 
