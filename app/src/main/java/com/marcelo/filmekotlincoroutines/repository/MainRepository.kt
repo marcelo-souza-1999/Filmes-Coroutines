@@ -1,9 +1,7 @@
 package com.marcelo.filmekotlincoroutines.repository
 
 import com.marcelo.filmekotlincoroutines.models.Movies
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 
 class MainRepository {
 

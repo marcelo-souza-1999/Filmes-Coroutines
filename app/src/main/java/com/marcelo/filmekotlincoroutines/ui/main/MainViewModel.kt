@@ -5,10 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.marcelo.filmekotlincoroutines.models.Movies
 import com.marcelo.filmekotlincoroutines.repository.MainRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 
 class MainViewModel(private val repository: MainRepository) : ViewModel() {
 
@@ -19,6 +16,7 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
             moviesLiveData.postValue(movies)
         }
     }*/
+
 
     fun getMoviesCoroutines () {
         CoroutineScope(Dispatchers.Main).launch {
